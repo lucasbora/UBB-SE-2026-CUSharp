@@ -110,6 +110,11 @@
                             Foreground="White" />
                 </StackPanel>
 
+                <TextBlock Margin="0,8,0,0"
+                       Foreground="#B91C1C"
+                       Visibility="{Binding HasPlacedBet, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       Text="You already placed a bet for this battle." />
+
                 <Border Margin="0,18,0,0"
                         Padding="16"
                         Background="#FFFDF9"
@@ -131,6 +136,10 @@
                         <TextBox Margin="0,6,0,0"
                                  Padding="10"
                                  Text="{Binding BetAmount, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Margin="0,4,0,0"
+                               Foreground="#B91C1C"
+                               FontSize="12"
+                               Text="{Binding BetValidationMessage}" />
                         <Button Margin="0,16,0,0"
                                 Padding="16,10"
                                 HorizontalAlignment="Left"

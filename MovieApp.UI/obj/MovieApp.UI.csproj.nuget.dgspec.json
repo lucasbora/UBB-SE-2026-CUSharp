@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.UI\\MovieApp.UI.csproj": {}
+    "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.UI\\MovieApp.UI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.Core\\MovieApp.Core.csproj": {
+    "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.Core\\MovieApp.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.Core\\MovieApp.Core.csproj",
+        "projectUniqueName": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.Core\\MovieApp.Core.csproj",
         "projectName": "MovieApp.Core",
-        "projectPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.Core\\MovieApp.Core.csproj",
-        "packagesPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\.nuget\\packages",
-        "outputPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.Core\\obj\\",
+        "projectPath": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.Core\\MovieApp.Core.csproj",
+        "packagesPath": "C:\\Users\\Stefana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\.appdata\\NuGet\\NuGet.Config",
+          "C:\\Users\\Stefana\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -95,24 +95,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.UI\\MovieApp.UI.csproj": {
+    "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.UI\\MovieApp.UI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.UI\\MovieApp.UI.csproj",
+        "projectUniqueName": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.UI\\MovieApp.UI.csproj",
         "projectName": "MovieApp.UI",
-        "projectPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.UI\\MovieApp.UI.csproj",
-        "packagesPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\.nuget\\packages",
-        "outputPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.UI\\obj\\",
+        "projectPath": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.UI\\MovieApp.UI.csproj",
+        "packagesPath": "C:\\Users\\Stefana\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.UI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\.appdata\\NuGet\\NuGet.Config",
+          "C:\\Users\\Stefana\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -127,8 +127,8 @@
           "net8.0-windows7.0": {
             "targetAlias": "net8.0-windows",
             "projectReferences": {
-              "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.Core\\MovieApp.Core.csproj": {
-                "projectPath": "C:\\Users\\boral\\OneDrive\\Desktop\\ISS_CU#\\MovieApp.Core\\MovieApp.Core.csproj"
+              "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.Core\\MovieApp.Core.csproj": {
+                "projectPath": "C:\\Users\\Stefana\\Desktop\\ISS\\UBB-SE-2026-CUSharp\\MovieApp.Core\\MovieApp.Core.csproj"
               }
             }
           }
@@ -143,7 +143,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -187,7 +187,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -23,8 +23,11 @@ public class BattleViewModel : ViewModelBase
     private string _statusMessage = "Loading battle arena...";
     private bool _isBetPanelVisible;
     private string _betAmount = string.Empty;
+    private string _betValidationMessage = string.Empty;
     private BattleMovieChoice? _selectedMovieChoice;
     private int _currentPoints;
+    private bool _isBetAmountValid;
+    private bool _hasPlacedBet;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BattleViewModel"/> class.
@@ -37,8 +40,8 @@ public class BattleViewModel : ViewModelBase
         _refreshService.RefreshRequested += OnRefreshRequested;
 
         RefreshCommand = new AsyncRelayCommand(_ => LoadBattleAsync());
-        ToggleBetPanelCommand = new RelayCommand(_ => IsBetPanelVisible = !IsBetPanelVisible, _ => HasActiveBattle);
-        ConfirmBetCommand = new AsyncRelayCommand(_ => ConfirmBetAsync(), _ => HasActiveBattle);
+        ToggleBetPanelCommand = new RelayCommand(_ => ToggleBetPanel(), _ => HasActiveBattle && !HasPlacedBet);
+        ConfirmBetCommand = new AsyncRelayCommand(_ => ConfirmBetAsync(), _ => HasActiveBattle && _isBetAmountValid && !HasPlacedBet);
 
         _ = LoadBattleAsync();
     }
@@ -61,6 +64,34 @@ public class BattleViewModel : ViewModelBase
 
     public bool HasActiveBattle => ActiveBattle is not null;
 
+    public bool HasPlacedBet
+    {
+        get => _hasPlacedBet;
+        private set
+        {
+            if (SetProperty(ref _hasPlacedBet, value))
+            {
+                if (value)
+                {
+                    IsBetPanelVisible = false;
+                    if (!string.IsNullOrWhiteSpace(BetAmount))
+                    {
+                        BetAmount = string.Empty;
+                    }
+
+                    if (!string.IsNullOrEmpty(BetValidationMessage))
+                    {
+                        BetValidationMessage = string.Empty;
+                    }
+                    _isBetAmountValid = false;
+                }
+
+                (ToggleBetPanelCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                (ConfirmBetCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
     public Movie? FirstMovie => ActiveBattle?.FirstMovie;
 
     public Movie? SecondMovie => ActiveBattle?.SecondMovie;
@@ -80,7 +111,19 @@ public class BattleViewModel : ViewModelBase
     public string BetAmount
     {
         get => _betAmount;
-        set => SetProperty(ref _betAmount, value);
+        set
+        {
+            if (SetProperty(ref _betAmount, value))
+            {
+                UpdateBetAmountValidation(value);
+            }
+        }
+    }
+
+    public string BetValidationMessage
+    {
+        get => _betValidationMessage;
+        private set => SetProperty(ref _betValidationMessage, value);
     }
 
     public BattleMovieChoice? SelectedMovieChoice
@@ -92,7 +135,13 @@ public class BattleViewModel : ViewModelBase
     public int CurrentPoints
     {
         get => _currentPoints;
-        private set => SetProperty(ref _currentPoints, value);
+        private set
+        {
+            if (SetProperty(ref _currentPoints, value))
+            {
+                UpdateBetAmountValidation(BetAmount);
+            }
+        }
     }
 
     public ObservableCollection<BattleMovieChoice> MovieChoices { get; } = [];
@@ -111,6 +160,7 @@ public class BattleViewModel : ViewModelBase
             CurrentPoints = (await _pointService.GetUserStats(LoggedInUserId)).TotalPoints;
 
             MovieChoices.Clear();
+
             if (ActiveBattle is not null)
             {
                 if (ActiveBattle.FirstMovie is not null)
@@ -124,11 +174,24 @@ public class BattleViewModel : ViewModelBase
                 }
 
                 SelectedMovieChoice = MovieChoices.FirstOrDefault();
-                StatusMessage = "An active battle is live this week.";
+
+                var existingBet = await _battleService.GetBet(LoggedInUserId, ActiveBattle.BattleId);
+                if (existingBet is not null)
+                {
+                    HasPlacedBet = true;
+                    var betMovieTitle = MovieChoices.FirstOrDefault(choice => choice.MovieId == existingBet.MovieId)?.Title ?? "this movie";
+                    StatusMessage = $"You already placed {existingBet.Amount} points on {betMovieTitle}.";
+                }
+                else
+                {
+                    HasPlacedBet = false;
+                    StatusMessage = "An active battle is live this week.";
+                }
             }
             else
             {
                 IsBetPanelVisible = false;
+                HasPlacedBet = false;
                 StatusMessage = "No active battle this week.";
             }
         }
@@ -140,14 +203,14 @@ public class BattleViewModel : ViewModelBase
 
     private async Task ConfirmBetAsync()
     {
-        if (ActiveBattle is null || SelectedMovieChoice is null)
+        if (ActiveBattle is null || SelectedMovieChoice is null || HasPlacedBet)
         {
             return;
         }
 
-        if (!int.TryParse(BetAmount, out var amount))
+        if (!_isBetAmountValid || !int.TryParse(BetAmount, out var amount))
         {
-            StatusMessage = "Enter a valid whole number of points.";
+            UpdateBetAmountValidation(BetAmount);
             return;
         }
 
@@ -156,6 +219,7 @@ public class BattleViewModel : ViewModelBase
             await _battleService.PlaceBet(LoggedInUserId, ActiveBattle.BattleId, SelectedMovieChoice.MovieId, amount);
             BetAmount = string.Empty;
             IsBetPanelVisible = false;
+            HasPlacedBet = true;
             _refreshService.RequestRefresh();
             StatusMessage = "Bet placed successfully.";
             await LoadBattleAsync();
@@ -169,5 +233,51 @@ public class BattleViewModel : ViewModelBase
     private async void OnRefreshRequested(object? sender, EventArgs e)
     {
         await LoadBattleAsync();
+    }
+
+    private void ToggleBetPanel()
+    {
+        if (!IsBetPanelVisible)
+        {
+            BetAmount = string.Empty;
+            BetValidationMessage = string.Empty;
+            _isBetAmountValid = false;
+            (ConfirmBetCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        }
+
+        IsBetPanelVisible = !IsBetPanelVisible;
+    }
+
+    private void UpdateBetAmountValidation(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            BetValidationMessage = string.Empty;
+            _isBetAmountValid = false;
+        }
+        else if (!int.TryParse(value, out var parsedAmount))
+        {
+            BetValidationMessage = "Use digits only (no decimals).";
+            _isBetAmountValid = false;
+        }
+        else if (parsedAmount <= 0)
+        {
+            BetValidationMessage = "Bet amount must be greater than zero.";
+            _isBetAmountValid = false;
+        }
+        else if (parsedAmount > CurrentPoints)
+        {
+            BetValidationMessage = CurrentPoints > 0
+                ? $"You only have {CurrentPoints} points available."
+                : "You do not have any points to wager.";
+            _isBetAmountValid = false;
+        }
+        else
+        {
+            BetValidationMessage = string.Empty;
+            _isBetAmountValid = true;
+        }
+
+        (ConfirmBetCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
     }
 }
